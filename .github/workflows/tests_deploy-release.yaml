@@ -33,7 +33,7 @@ jobs:
         run: npm run test:unit:prod # && npm run test:e2e
 
       - name: Deploy PR (main) for new Release
-        uses: googleapis/release-please-action@v4
+        uses: googleapis/release-please-action@v5
         with:
           release-type: node
           target-branch: main
