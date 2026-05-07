@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staging-seatyrants-website-frontend-deployment
+  namespace: staging-seatyrants-website-frontend
+  labels:
+    app: staging-seatyrants-website-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: staging-seatyrants-website-frontend
+  template:
+    metadata:
+      labels:
+        app: staging-seatyrants-website-frontend
+    spec:
+      containers:
+        - name: staging-seatyrants-website-frontend
+          image: corentin35/seatyrants-website-frontend:staging-${TAG_VERSION}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '128Mi'
+            limits:
+              cpu: '200m'
+              memory: '256Mi'
+      imagePullSecrets:
+        - name: regcred

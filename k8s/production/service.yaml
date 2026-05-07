@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-seatyrants-website-frontend-service
+  namespace: prod-seatyrants-website-frontend
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: prod-seatyrants-website-frontend

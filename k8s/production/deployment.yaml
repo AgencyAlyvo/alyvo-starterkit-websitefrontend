@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-seatyrants-website-frontend-deployment
+  namespace: prod-seatyrants-website-frontend
+  labels:
+    app: prod-seatyrants-website-frontend
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: prod-seatyrants-website-frontend
+  template:
+    metadata:
+      labels:
+        app: prod-seatyrants-website-frontend
+    spec:
+      containers:
+        - name: prod-seatyrants-website-frontend
+          image: corentin35/seatyrants-website-frontend:${TAG_VERSION}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: '250m'
+              memory: '512Mi'
+            limits:
+              cpu: '500m'
+              memory: '1Gi'
+      imagePullSecrets:
+        - name: regcred

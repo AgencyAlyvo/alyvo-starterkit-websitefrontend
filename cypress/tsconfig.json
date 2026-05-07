@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["cypress", "node"],
+    "lib": ["ESNext", "DOM"],
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["../tests/e2e/**/*.ts", "./support/**/*.ts", "../cypress.config.ts"]
+}

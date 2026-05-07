@@ -1,0 +1,43 @@
+services:
+  nuxt:
+    container_name: nuxt
+    image: alyvo/website-frontend:develop
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ENV_MODE=${ENV_MODE:-dev-ssr}
+    command: /bin/sh -c "\
+      if [ $$ENV_MODE = 'dev-ssr' ]; then \
+      npx cross-env NUXT_SSR=true nuxi dev src-nuxt --dotenv .env.development --host=0.0.0.0 --no-clear --port=1470; \
+      elif [ $$ENV_MODE = 'dev-spa' ]; then \
+      npx cross-env NUXT_SSR=false nuxi dev src-nuxt --dotenv .env.development --host=0.0.0.0 --no-clear --port=1470; \
+      elif [ $$ENV_MODE = 'staging-ssr' ]; then \
+      npx cross-env NUXT_SSR=true nuxi dev src-nuxt --dotenv .env.staging --host=0.0.0.0 --no-clear --port=1470; \
+      elif [ $$ENV_MODE = 'staging-spa' ]; then \
+      npx cross-env NUXT_SSR=false nuxi dev src-nuxt --dotenv .env.staging --host=0.0.0.0 --no-clear --port=1470; \
+      elif [ $$ENV_MODE = 'prod-ssr' ]; then \
+      npx cross-env NUXT_SSR=true nuxi dev src-nuxt --dotenv .env.production --host=0.0.0.0 --no-clear --port=1470; \
+      elif [ $$ENV_MODE = 'prod-spa' ]; then \
+      npx cross-env NUXT_SSR=false nuxi dev src-nuxt --dotenv .env.production --host=0.0.0.0 --no-clear --port=1470; \
+      else \
+      echo 'ENV_MODE non reconnu, utilisation de dev-ssr par défaut'; \
+      npx cross-env NUXT_SSR=true nuxi dev src-nuxt --dotenv .env.development --host=0.0.0.0 --no-clear --port=1470; \
+      fi"
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - '1470:1470'
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  app:
+  node_modules:
