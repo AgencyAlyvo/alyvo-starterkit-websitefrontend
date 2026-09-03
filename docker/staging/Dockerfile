@@ -1,5 +1,5 @@
 # First Stage: Build the App
-FROM node:24.15.0 AS builder
+FROM node:24.20.0 AS builder
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN npm run web:build:server:staging:ssr
 
 
 # Second Stage: Setup the runtime
-FROM node:24.15.0 AS runner
+FROM node:24.20.0 AS runner
 
 WORKDIR /app
 
