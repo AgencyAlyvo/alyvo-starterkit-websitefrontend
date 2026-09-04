@@ -29,7 +29,7 @@ jobs:
         run: npm run test:unit:staging # && npm run test:e2e
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4.5.2
+        uses: docker/login-action@v4.6.0
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
